@@ -1,0 +1,6 @@
+{
+  "method": "Credit Card",
+  "amount": 100,
+  "parcelId": "P001",
+  "status": "Completed"
+}
