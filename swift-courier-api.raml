@@ -1,0 +1,115 @@
+#%RAML 1.0
+Title : swift-courier-api
+version : v1
+description : RESTful API for online parcel delivery & courier service
+Protocols :[HTTP,HTTPS]
+MediaTypes : [application,json]
+
+
+traits:
+  errorResponses:
+    responses:
+      400:
+        description: Bad Request
+      404:
+        description: Resource Not Found
+      500:
+        description: Internal Server Error
+
+resourceTypes:
+  collection:
+    get:
+      is: [ errorResponses ]
+      description: Retrieve all <<resourceName>>
+  item:
+    get:
+      is: [ errorResponses ]
+      description: Retrieve a <<resourceName>> by ID
+ /docs : 
+    get:
+        description : 
+            SwiftCourier api documentation
+                purpose : delivery and tracking
+                authentication : API key
+                tracking: create parcel,assign driver, track
+/customers : 
+    get : 
+        description : return list of customers
+        response : 
+         200 : 
+            body : 
+                application/json : 
+                    example : include examples/customers/listofcustomers.json
+post:
+    description: Create a new customer
+    body:
+      application/json:
+        type: Customer
+        example: !include examples/customers/create-customer.json
+    responses:
+      201:
+        body:
+          application/json:
+            example: !include examples/customers/get-customer.json
+/customers/{customerId}: 
+    get:
+        description : return a customer detail
+        response : 
+         200 : 
+            body : 
+                application/json : 
+                    example : include examples/customers/getcustomers.json
+    put:
+        description : update customer information
+    delete : 
+        description : delete customer information    
+        /parcels : 
+    get : 
+        description : get all parcel
+    post : 
+        description :  create parcel orders  
+/parcels/{parcelId}
+    get : return specific parcel
+    put : update
+    putch : partial update
+    delete : remove parcel
+    /tracking :
+    get : 
+        description : track a parcel with tracking code
+        query parameter :
+            trackingcode :
+                type : string
+                required : true
+        responses:
+            200:
+                body:
+                 application/json:
+                    example:
+                        trackingCode: "SW123"
+                            status: "In Transit"
+                            /drivers:
+  get: List all drivers
+  post: Register a driver
+
+/drivers/{driverId}/assignments:
+  get: Get all assigned parcels for a driver
+  post: Assign a parcel to driver
+/payment :
+    post:
+       description:make payment
+       body : application/json
+       type : payment
+       example :
+        method: "Credit Card"
+          amount: 100
+          parcelId: "P001"
+          status: "Completed"
+    
+    
+
+
+
+
+
+
+
